@@ -1,29 +1,71 @@
 {
+  "log": {
+    "access": "/var/log/v2ray/access.log",
+    "error": "/var/log/v2ray/error.log",
+    "loglevel": "warning"
+  },
   "inbounds": [
     {
-      "port": 443,
+      "port": 8080,
       "protocol": "vmess",
       "settings": {
         "clients": [
           {
-            "id": "e4e5d6f7-8a9b-0c1d-2e3f-4a5b6c7d8e9f",  # UUID خود را جایگزین کنید
-            "alterId": 0
+            "id": "7b0579b8-4356-4fb1-b652-a50d88c1520d",
+            "alterId": 0,
+            "email": "user1@v2ray.com",
+            "level": 0
+          },
+          {
+            "id": "0356b09d-173a-4b65-b4be-e43d397a56ca",
+            "alterId": 0,
+            "email": "user2@v2ray.com",
+            "level": 0
           }
-        ]
+        ],
+        "disableInsecureEncryption": true
       },
       "streamSettings": {
         "network": "ws",
         "security": "tls",
         "wsSettings": {
-          "path": "/ray"  # مسیر WebSocket
+          "path": "/mypath-v2ray-iran",
+          "headers": {
+            "Host": "ellmatadorv2ray-railway-production.up.railway.app"
+          }
         }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"]
       }
     }
   ],
   "outbounds": [
     {
       "protocol": "freedom",
-      "settings": {}
+      "settings": {},
+      "tag": "direct"
+    },
+    {
+      "protocol": "blackhole",
+      "settings": {},
+      "tag": "blocked"
     }
-  ]
+  ],
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",
+    "rules": [
+      {
+        "type": "field",
+        "ip": ["geoip:private"],
+        "outboundTag": "blocked"
+      },
+      {
+        "type": "field",
+        "protocol": ["bittorrent"],
+        "outboundTag": "blocked"
+      }
+    ]
+  }
 }
