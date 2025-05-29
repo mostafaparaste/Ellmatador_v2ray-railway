@@ -1,25 +1,19 @@
 {
   "log": {
-    "access": "/var/log/v2ray/access.log",
-    "error": "/var/log/v2ray/error.log",
-    "loglevel": "warning"
+    "loglevel": "warning",
+    "access": "/dev/null",
+    "error": "/dev/null"
   },
   "inbounds": [
     {
       "port": 8080,
+      "listen": "0.0.0.0",
       "protocol": "vmess",
       "settings": {
         "clients": [
           {
             "id": "7b0579b8-4356-4fb1-b652-a50d88c1520d",
             "alterId": 0,
-            "email": "user1@v2ray.com",
-            "level": 0
-          },
-          {
-            "id": "0356b09d-173a-4b65-b4be-e43d397a56ca",
-            "alterId": 0,
-            "email": "user2@v2ray.com",
             "level": 0
           }
         ],
@@ -29,10 +23,14 @@
         "network": "ws",
         "security": "tls",
         "wsSettings": {
-          "path": "/mypath-v2ray-iran",
+          "path": "/ray-subpath",
           "headers": {
             "Host": "ellmatadorv2ray-railway-production.up.railway.app"
           }
+        },
+        "tlsSettings": {
+          "serverName": "ellmatadorv2ray-railway-production.up.railway.app",
+          "alpn": ["http/1.1"]
         }
       },
       "sniffing": {
@@ -46,11 +44,6 @@
       "protocol": "freedom",
       "settings": {},
       "tag": "direct"
-    },
-    {
-      "protocol": "blackhole",
-      "settings": {},
-      "tag": "blocked"
     }
   ],
   "routing": {
@@ -59,11 +52,6 @@
       {
         "type": "field",
         "ip": ["geoip:private"],
-        "outboundTag": "blocked"
-      },
-      {
-        "type": "field",
-        "protocol": ["bittorrent"],
         "outboundTag": "blocked"
       }
     ]
